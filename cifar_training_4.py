@@ -20,19 +20,20 @@ class CifarTraining():
         optimizer.apply_gradients(zip(gradients, model.trainable_variables))
         return loss
     
-    def training(self):
+    def training(self, loss_arr, x_data):
         epochs = 2
         for epoch in range(epochs):
             print(f"Epoch {epoch+1}/{epochs}")
-            for step in range(train_dataset.__len__()):
-                print(self.train_dataset.imgs[step].shape)
-                print(self.train_dataset.labels[step])
+            for step in range(self.train_dataset.__len__()):
+                # print(self.train_dataset.imgs[step].shape)
+                # print(self.train_dataset.labels[step])
                 label = self.train_dataset.labels[step]
                 label = label.reshape((1, 10))
-                # label = self.train_dataset.labels[step].reshape((1, 1))/9.
                 loss = self.training_step(self.model, self.train_dataset.imgs[step], label)
                 if step % 100 == 0:
                     print(f"Step {step}, Loss: {loss.numpy()}")
+                    loss_arr.append(loss.numpy())
+                    x_data.append(len(loss_arr))
 
 if __name__ == "__main__":
     model = CifarModel()
